@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "../ui/button";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function GoogleAuthForm({
   className,
@@ -21,6 +22,22 @@ export default function GoogleAuthForm({
       return "Failed to login";
     }
   }, null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const initOneTap = async () => {
+      await authClient.oneTap({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push("/dashboard");
+          },
+        },
+      });
+    };
+    initOneTap();
+  }, []);
+
   return (
     <form action={formAction} className={cn("mt-3", className)} {...props}>
       <div className="flex flex-col gap-3">
