@@ -10,9 +10,12 @@ if (!process.env.BETTER_AUTH_SECRET || !process.env.BETTER_AUTH_URL) {
   );
 }
 
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+if (
+  !process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+  !process.env.GOOGLE_CLIENT_SECRET
+) {
   throw new Error(
-    "Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET environment variable."
+    "Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET environment variable."
   );
 }
 
@@ -27,7 +30,7 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
