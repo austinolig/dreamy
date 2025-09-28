@@ -36,7 +36,7 @@ export default function GoogleAuthForm({
       });
     };
     initOneTap();
-  }, []);
+  }, [router]);
 
   return (
     <form action={formAction} className={cn("mt-3", className)} {...props}>
