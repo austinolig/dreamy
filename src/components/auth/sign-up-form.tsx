@@ -13,27 +13,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signInEmail } from "@/lib/actions";
+import { signUpEmail } from "@/lib/actions";
 import { useActionState } from "react";
 import { LoaderCircle } from "lucide-react";
+import GoogleAuthForm from "./google-auth-form";
 
-export function LoginForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [message, formAction, isPending] = useActionState(signInEmail, null);
+  const [message, formAction, isPending] = useActionState(signUpEmail, null);
+
   return (
     <Card
       className={cn("flex flex-col gap-6 w-full max-w-md", className)}
       {...props}
     >
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your details below to login.</CardDescription>
+        <CardTitle>Sign Up</CardTitle>
+        <CardDescription>Enter your details below to sign up.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction}>
           <div className="flex flex-col gap-6">
+            <div className="grid gap-3">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Jane Doe"
+                required
+              />
+            </div>
             <div className="grid gap-3">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -45,15 +57,7 @@ export function LoginForm({
               />
             </div>
             <div className="grid gap-3">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -67,21 +71,19 @@ export function LoginForm({
             <div className="flex flex-col gap-3">
               {message && <p className="text-red-500 text-sm">{message}</p>}
               <Button type="submit" className="w-full" disabled={isPending}>
-                Login
+                Sign Up
                 {isPending && <LoaderCircle className="animate-spin" />}
-              </Button>
-              <Button disabled variant="outline" className="w-full">
-                Continue with Google
               </Button>
             </div>
           </div>
         </form>
+        <GoogleAuthForm />
       </CardContent>
       <CardFooter className="justify-center">
         <div className="text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="underline underline-offset-4">
-            Sign up
+          Already have an account?{" "}
+          <Link href="/login" className="underline underline-offset-4">
+            Login
           </Link>
         </div>
       </CardFooter>
