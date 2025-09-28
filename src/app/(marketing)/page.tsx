@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { SignUpForm } from "@/components/sign-up-form";
 
 const features = [
   {
@@ -153,7 +154,7 @@ export default function HomePage() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="#benefits">See Benefits</Link>
+              <Link href="/sign-up">Sign Up</Link>
             </Button>
           </div>
         </div>
