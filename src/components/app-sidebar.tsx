@@ -29,10 +29,10 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { User } from "@prisma/client";
+import { Moon } from "lucide-react";
 
 const data = {
   user: {
@@ -160,15 +160,10 @@ export function AppSidebar({
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
+            <div className="flex items-center gap-2">
+              <Moon className="size-5" />
+              <span className="text-base font-semibold">Dreamy</span>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
