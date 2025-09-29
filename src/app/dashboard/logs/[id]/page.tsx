@@ -9,8 +9,13 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -38,29 +43,12 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
     redirect("/login");
   }
 
-  const userId = "id" in session.user ? String(session.user.id) : null;
-
-  if (!userId) {
-    redirect("/login");
-  }
-
-  const dreamLogId = Number.parseInt(params.id, 10);
-
-  if (!Number.isInteger(dreamLogId) || dreamLogId <= 0) {
-    notFound();
-  }
+  const dreamLogId = Number.parseInt(params.id);
 
   const dreamLog = await prisma.dreamLog.findFirst({
     where: {
       id: dreamLogId,
-      tags: {
-        some: {
-          userId,
-        },
-      },
-    },
-    include: {
-      tags: true,
+      userId: session.user.id,
     },
   });
 
@@ -94,21 +82,23 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
                 Back to timeline
               </Link>
             </Button>
-            <Badge variant="secondary" className="px-3 py-1 text-xs uppercase tracking-wide">
+            <Badge
+              variant="secondary"
+              className="px-3 py-1 text-xs uppercase tracking-wide"
+            >
               {dreamLog.isNap ? "Nap" : "Overnight"}
             </Badge>
           </div>
           <Card className="flex flex-col gap-0">
-            <CardHeader>
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2 text-xl">
                 {dreamDateFormatter.format(dreamLog.dreamDate)}
                 <span className="sr-only">Dream timing</span>
               </CardTitle>
-              <p className="text-muted-foreground text-sm">
+              <CardDescription>
                 Logged {metaDateFormatter.format(dreamLog.createdAt)}
-              </p>
+              </CardDescription>
             </CardHeader>
-            <Separator />
             <CardContent className="space-y-4 py-6">
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 {dreamLog.isNap ? (
@@ -122,7 +112,7 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
                 {dreamLog.description}
               </p>
             </CardContent>
-            {dreamLog.tags.length > 0 ? (
+            {/* {dreamLog.tags.length > 0 ? (
               <>
                 <Separator />
                 <CardFooter className="flex flex-wrap gap-2 py-4">
@@ -133,7 +123,7 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
                   ))}
                 </CardFooter>
               </>
-            ) : null}
+            ) : null} */}
           </Card>
         </div>
       </SidebarInset>

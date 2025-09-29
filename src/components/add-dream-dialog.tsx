@@ -1,9 +1,6 @@
 "use client";
 
-import * as React from "react";
-import type { CheckedState } from "@radix-ui/react-checkbox";
-import { ChevronDownIcon, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronDownIcon, LoaderCircle, Plus } from "lucide-react";
 
 import {
   AlertDialog,
@@ -14,7 +11,6 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
-  AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -27,62 +23,25 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { createDreamLog } from "@/lib/actions";
+import { useState } from "react";
 
 export function AddDreamDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [description, setDescription] = React.useState("");
-  const [dreamDate, setDreamDate] = React.useState<Date | undefined>(undefined);
-  const [isNap, setIsNap] = React.useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-  const [isPending, startTransition] = React.useTransition();
-  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [dreamDate, setDreamDate] = useState<Date | undefined>(undefined);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
-  const handleSubmit = React.useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      if (!dreamDate) {
-        console.warn("Dream date is required before saving a dream entry.");
-        setIsDatePickerOpen(true);
-        return;
-      }
-
-      const payload = {
-        description: description.trim(),
-        dreamDate: dreamDate.toISOString(),
-        isNap,
-      };
-
-      if (!payload.description) {
-        setError("Description is required");
-        return;
-      }
-
-      startTransition(() => {
-        void (async () => {
-          setError(null);
-          const result = await createDreamLog(payload);
-
-          if (!result.success) {
-            setError(result.error);
-            return;
-          }
-
-          setOpen(false);
-          setDescription("");
-          setDreamDate(undefined);
-          setIsNap(false);
-          router.refresh();
-        })();
-      });
-    },
-    [description, dreamDate, isNap, router]
-  );
-
-  const handleCheckedChange = React.useCallback((checked: CheckedState) => {
-    setIsNap(checked === true);
-  }, []);
+  const handleSubmit = async (formData: FormData) => {
+    setIsPending(true);
+    setMessage(null);
+    const message = await createDreamLog(formData);
+    if (!message) {
+      setOpen(false);
+    }
+    setIsPending(false);
+    setMessage(message);
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -99,17 +58,15 @@ export function AddDreamDialog() {
             Capture the essentials for your dream journal entry.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="dream-description">Description</Label>
             <Textarea
               id="dream-description"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
+              name="description"
               placeholder="Write the highlights of your dream..."
               required
             />
-            {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="dream-date">Dream date</Label>
@@ -121,6 +78,16 @@ export function AddDreamDialog() {
                   variant="outline"
                   className="w-full justify-between font-normal"
                 >
+                  <input
+                    className="absolute inset-0 w-full h-full opacity-0 pointer-events-none"
+                    id="dreamDate"
+                    name="dreamDate"
+                    type="text"
+                    value={dreamDate ? dreamDate.toLocaleDateString() : ""}
+                    onChange={() => {}}
+                    tabIndex={-1}
+                    required
+                  />
                   {dreamDate ? dreamDate.toLocaleDateString() : "Select date"}
                   <ChevronDownIcon />
                 </Button>
@@ -145,20 +112,16 @@ export function AddDreamDialog() {
             </Popover>
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox
-              id="dream-nap"
-              checked={isNap}
-              onCheckedChange={handleCheckedChange}
-            />
-            <Label htmlFor="dream-nap">Was this a nap?</Label>
+            <Checkbox id="isNap" name="isNap" />
+            <Label htmlFor="isNap">Was this a nap?</Label>
           </div>
           <AlertDialogFooter>
+            {message && <p className="text-sm text-destructive">{message}</p>}
             <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
-            <AlertDialogAction asChild>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? "Saving..." : "Save entry"}
-              </Button>
-            </AlertDialogAction>
+            <Button type="submit" disabled={isPending}>
+              Save
+              {isPending && <LoaderCircle className="animate-spin" />}
+            </Button>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

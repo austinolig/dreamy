@@ -12,10 +12,6 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const dreamDateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "long",
-});
-
 export default async function Page() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -25,13 +21,11 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const userId = "id" in session.user ? String(session.user.id) : null;
-
-  if (!userId) {
-    redirect("/login");
-  }
-
-  const dreamLogs = await prisma.dreamLog.findMany();
+  const dreamLogs = await prisma.dreamLog.findMany({
+    where: {
+      userId: session.user.id,
+    },
+  });
 
   return (
     <SidebarProvider
@@ -63,7 +57,7 @@ export default async function Page() {
                   <Card className="h-full transition-shadow group-hover:shadow-md">
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between text-base">
-                        {dreamDateFormatter.format(dream.dreamDate)}
+                        {dream.dreamDate.toLocaleDateString()}
                         <span className="text-xs font-medium text-muted-foreground">
                           {dream.isNap ? "Nap" : "Overnight"}
                         </span>
