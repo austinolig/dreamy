@@ -23,6 +23,8 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  tags          Tag[]
+  dreamLogs     DreamLog[]
 
   @@unique([email])
   @@map("user")
@@ -71,4 +73,28 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model DreamLog {
+  id           Int           @id @default(autoincrement())
+  description  String
+  dreamDate    DateTime
+  isNap        Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dream_log")
+}
+
+model Tag {
+  id        Int           @id @default(autoincrement())
+  name      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tag")
 }
