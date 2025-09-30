@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon, LoaderCircle, Plus } from "lucide-react";
+import { ChevronDownIcon, LoaderCircle, Pencil } from "lucide-react";
 
 import {
   AlertDialog,
@@ -22,15 +22,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { createDreamLog } from "@/lib/actions";
+import { updateDreamLog } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
 
-export function AddDreamDialog() {
+export function EditDreamDialog({
+  id,
+  description,
+  dreamDate,
+  isNap,
+}: {
+  id: number;
+  description: string;
+  dreamDate: Date;
+  isNap: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [dreamDate, setDreamDate] = useState<Date>(new Date());
+  const [dreamDateState, setDreamDateState] = useState<Date>(dreamDate);
 
-  const [result, formAction, isPending] = useActionState(createDreamLog, {
+  const [result, formAction, isPending] = useActionState(updateDreamLog, {
     success: false,
     message: "",
   });
@@ -45,24 +55,26 @@ export function AddDreamDialog() {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="w-full h-full rounded-xl">
-          <Plus className="size-4" />
-          Add
+        <Button variant="outline" className="rounded-xl">
+          <Pencil className="size-4" />
+          Edit
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add Dream Log</AlertDialogTitle>
+          <AlertDialogTitle>Edit Dream Log</AlertDialogTitle>
           <AlertDialogDescription>
-            Capture your dream log entry.
+            Edit the essentials for your dream journal entry.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form action={formAction} className="space-y-4">
+          <input type="hidden" name="id" value={id} />
           <div className="space-y-2">
             <Label htmlFor="dream-description">Description</Label>
             <Textarea
               id="dream-description"
               name="description"
+              defaultValue={description || ""}
               placeholder="Write the highlights of your dream..."
               required
             />
@@ -80,12 +92,12 @@ export function AddDreamDialog() {
                     id="dreamDate"
                     name="dreamDate"
                     type="text"
-                    value={dreamDate.toLocaleDateString()}
+                    value={dreamDateState.toLocaleDateString()}
                     tabIndex={-1}
                     readOnly
                     hidden
                   />
-                  {dreamDate.toLocaleDateString()}
+                  {dreamDateState.toLocaleDateString()}
                   <ChevronDownIcon />
                 </Button>
               </PopoverTrigger>
@@ -95,10 +107,10 @@ export function AddDreamDialog() {
               >
                 <Calendar
                   mode="single"
-                  selected={dreamDate}
+                  selected={dreamDateState}
                   captionLayout="dropdown"
                   onSelect={(date) => {
-                    setDreamDate(date || new Date());
+                    setDreamDateState(date || new Date());
                     if (date) {
                       setIsDatePickerOpen(false);
                     }
@@ -109,7 +121,7 @@ export function AddDreamDialog() {
             </Popover>
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox id="isNap" name="isNap" />
+            <Checkbox id="isNap" name="isNap" defaultChecked={isNap} />
             <Label htmlFor="isNap">Was this a nap?</Label>
           </div>
           <AlertDialogFooter>

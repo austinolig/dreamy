@@ -60,13 +60,16 @@ export const signInEmail = async (
   redirect("/dashboard");
 };
 
-export const createDreamLog = async (formData: FormData) => {
+export const createDreamLog = async (
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session?.user.id) {
-    return "Unauthorized";
+    return { success: false, message: "Unauthorized" };
   }
 
   const description = formData.get("description");
@@ -74,7 +77,7 @@ export const createDreamLog = async (formData: FormData) => {
   const isNap = formData.get("isNap");
 
   if (!description || !dreamDate) {
-    return "Missing required fields";
+    return { success: false, message: "Missing required fields" };
   }
 
   try {
@@ -88,9 +91,83 @@ export const createDreamLog = async (formData: FormData) => {
     });
   } catch (error) {
     console.error(error);
-    return "Failed to create dream log";
+    return { success: false, message: "Failed to create dream log" };
   }
 
   revalidatePath("/dashboard");
-  return null;
+  return { success: true, message: "Dream log created successfully" };
+};
+
+export const updateDreamLog = async (
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user.id) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  const id = formData.get("id");
+  const description = formData.get("description");
+  const dreamDate = formData.get("dreamDate");
+  const isNap = formData.get("isNap");
+
+  if (description === null) {
+    return { success: false, message: "Missing description" };
+  }
+
+  if (dreamDate === null) {
+    return { success: false, message: "Missing dream date" };
+  }
+
+  try {
+    await prisma.dreamLog.update({
+      where: { id: Number(id), userId: session.user.id },
+      data: {
+        description: description.toString(),
+        dreamDate: new Date(dreamDate.toString()),
+        isNap: isNap === "on",
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to update dream log" };
+  }
+
+  revalidatePath(`/dashboard/logs/${id}`);
+  return { success: true, message: "Dream log updated successfully" };
+};
+
+export const deleteDreamLog = async (
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user.id) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  const id = formData.get("id");
+
+  if (!id) {
+    return { success: false, message: "Missing required fields" };
+  }
+
+  try {
+    await prisma.dreamLog.delete({
+      where: { id: Number(id), userId: session.user.id },
+    });
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to delete dream log" };
+  }
+
+  revalidatePath("/dashboard");
+  return { success: true, message: "Dream log deleted successfully" };
 };

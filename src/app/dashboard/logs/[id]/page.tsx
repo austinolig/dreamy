@@ -13,25 +13,18 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-
-const dreamDateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "full",
-  timeStyle: "short",
-});
-
-const metaDateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
+import { format } from "date-fns";
+import { EditDreamDialog } from "@/components/edit-dream-dialog";
 
 type DreamLogPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function DreamLogPage({ params }: DreamLogPageProps) {
@@ -43,12 +36,16 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
     redirect("/login");
   }
 
-  const dreamLogId = Number.parseInt(params.id);
+  const { id } = await params;
+  const dreamLogId = Number.parseInt(id);
 
   const dreamLog = await prisma.dreamLog.findFirst({
     where: {
       id: dreamLogId,
       userId: session.user.id,
+    },
+    include: {
+      tags: true,
     },
   });
 
@@ -90,14 +87,21 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
             </Badge>
           </div>
           <Card className="flex flex-col gap-0">
-            <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-2 text-xl">
-                {dreamDateFormatter.format(dreamLog.dreamDate)}
-                <span className="sr-only">Dream timing</span>
-              </CardTitle>
-              <CardDescription>
-                Logged {metaDateFormatter.format(dreamLog.createdAt)}
-              </CardDescription>
+            <CardHeader className="border-b flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  {format(dreamLog.dreamDate, "EEEE, MMMM d, yyyy")}
+                </CardTitle>
+                <CardDescription>
+                  Logged {format(dreamLog.createdAt, "EEE, MMM d")}
+                </CardDescription>
+              </div>
+              <EditDreamDialog
+                id={dreamLog.id}
+                description={dreamLog.description}
+                dreamDate={dreamLog.dreamDate}
+                isNap={dreamLog.isNap}
+              />
             </CardHeader>
             <CardContent className="space-y-4 py-6">
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
@@ -112,18 +116,14 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
                 {dreamLog.description}
               </p>
             </CardContent>
-            {/* {dreamLog.tags.length > 0 ? (
-              <>
-                <Separator />
-                <CardFooter className="flex flex-wrap gap-2 py-4">
-                  {dreamLog.tags.map((tag) => (
-                    <Badge key={tag.id} variant="outline">
-                      {tag.name}
-                    </Badge>
-                  ))}
-                </CardFooter>
-              </>
-            ) : null} */}
+            <CardFooter>
+              {dreamLog.tags.length > 0 &&
+                dreamLog.tags.map((tag) => (
+                  <Badge key={tag.id} variant="outline">
+                    {tag.name}
+                  </Badge>
+                ))}
+            </CardFooter>
           </Card>
         </div>
       </SidebarInset>
