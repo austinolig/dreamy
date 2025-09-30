@@ -1,14 +1,19 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeftIcon, MoonIcon, SunIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  CalendarIcon,
+  ClockIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -17,6 +22,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import { EditDreamDialog } from "@/components/edit-dream-dialog";
+import { DeleteDreamDialog } from "@/components/delete-dream-dialog";
+import { Separator } from "@/components/ui/separator";
 
 type DreamLogPageProps = {
   params: Promise<{ id: string }>;
@@ -49,59 +56,105 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-4">
-      <div className="flex items-center gap-3">
-        <Button asChild variant="ghost" className="gap-2">
-          <Link href="/dashboard" className="flex items-center">
+    <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
+      {/* Navigation */}
+      <div className="flex items-center justify-between">
+        <Button asChild variant="ghost" size="sm" className="gap-2">
+          <Link href="/dashboard">
             <ArrowLeftIcon className="size-4" />
             Back to timeline
           </Link>
         </Button>
         <Badge
-          variant="secondary"
-          className="px-3 py-1 text-xs uppercase tracking-wide"
+          variant={dreamLog.isNap ? "default" : "secondary"}
+          className="gap-1.5"
         >
-          {dreamLog.isNap ? "Nap" : "Overnight"}
+          {dreamLog.isNap ? (
+            <SunIcon className="size-3" />
+          ) : (
+            <MoonIcon className="size-3" />
+          )}
+          {dreamLog.isNap ? "Nap Dream" : "Overnight Dream"}
         </Badge>
       </div>
-      <Card className="flex flex-col gap-0">
-        <CardHeader className="border-b flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-xl">
-              {format(dreamLog.dreamDate, "EEEE, MMMM d, yyyy")}
-            </CardTitle>
-            <CardDescription>
-              Logged {format(dreamLog.createdAt, "EEE, MMM d")}
-            </CardDescription>
+
+      {/* Main Content Card */}
+      <Card className="overflow-hidden">
+        <CardHeader className="space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-2 flex-1">
+              <CardTitle className="text-2xl md:text-3xl font-bold">
+                {format(dreamLog.dreamDate, "EEEE, MMMM d, yyyy")}
+              </CardTitle>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <CalendarIcon className="size-4" />
+                  <span>
+                    Logged {format(dreamLog.createdAt, "MMM d, yyyy")}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <ClockIcon className="size-4" />
+                  <span>{format(dreamLog.createdAt, "h:mm a")}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <EditDreamDialog
+                id={dreamLog.id}
+                description={dreamLog.description}
+                dreamDate={dreamLog.dreamDate}
+                isNap={dreamLog.isNap}
+              />
+              <DeleteDreamDialog id={dreamLog.id} redirectPath="/dashboard" />
+            </div>
           </div>
-          <EditDreamDialog
-            id={dreamLog.id}
-            description={dreamLog.description}
-            dreamDate={dreamLog.dreamDate}
-            isNap={dreamLog.isNap}
-          />
         </CardHeader>
-        <CardContent className="space-y-4 py-6">
+
+        <CardContent className="space-y-6 py-8 px-6 md:px-8">
+          {/* Dream Type Indicator */}
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
             {dreamLog.isNap ? (
-              <SunIcon className="size-4" aria-hidden />
+              <>
+                <SunIcon className="size-4" aria-hidden />
+                <span>Captured during an afternoon nap</span>
+              </>
             ) : (
-              <MoonIcon className="size-4" aria-hidden />
+              <>
+                <MoonIcon className="size-4" aria-hidden />
+                <span>Captured from overnight sleep</span>
+              </>
             )}
-            {dreamLog.isNap ? "Captured during a nap" : "Overnight dream"}
           </div>
-          <p className="whitespace-pre-wrap text-base text-foreground">
-            {dreamLog.description}
-          </p>
+
+          <Separator />
+
+          {/* Dream Description */}
+          <div className="space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Dream Journal Entry
+            </h2>
+            <p className="whitespace-pre-wrap text-base leading-relaxed">
+              {dreamLog.description}
+            </p>
+          </div>
         </CardContent>
-        <CardFooter>
-          {dreamLog.tags.length > 0 &&
-            dreamLog.tags.map((tag) => (
-              <Badge key={tag.id} variant="outline">
-                {tag.name}
-              </Badge>
-            ))}
-        </CardFooter>
+
+        {/* Tags Footer */}
+        {dreamLog.tags.length > 0 && (
+          <CardFooter className="flex flex-col items-start gap-3 border-t py-4">
+            <h3 className="text-sm font-semibold text-muted-foreground">
+              Tags
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {dreamLog.tags.map((tag) => (
+                <Badge key={tag.id} variant="secondary" className="text-xs">
+                  {tag.name}
+                </Badge>
+              ))}
+            </div>
+          </CardFooter>
+        )}
       </Card>
     </div>
   );

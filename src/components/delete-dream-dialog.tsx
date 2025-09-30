@@ -15,9 +15,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { deleteDreamLog } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function DeleteDreamDialog({ id }: { id: number }) {
+export function DeleteDreamDialog({
+  id,
+  redirectPath,
+}: {
+  id: number;
+  redirectPath?: string;
+}) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const [result, formAction, isPending] = useActionState(deleteDreamLog, {
     success: false,
@@ -28,33 +36,46 @@ export function DeleteDreamDialog({ id }: { id: number }) {
     result.message = "";
     if (result.success) {
       setOpen(false);
+      if (redirectPath) {
+        router.push(redirectPath);
+      }
     }
-  }, [result]);
+  }, [result, redirectPath, router]);
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button className="relative z-1" variant="outline" size="icon">
-          <TrashIcon className="text-destructive" />
+          <TrashIcon className="size-4 text-destructive" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Dream Log?</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete this dream log?
+            Are you sure you want to permanently delete this dream log? This
+            action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form action={formAction} className="space-y-4">
-          {!result.success && (
+          {!result.success && result.message && (
             <p className="text-sm text-destructive">{result.message}</p>
           )}
           <input type="hidden" name="id" value={id} />
           <AlertDialogFooter>
             <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
             <Button type="submit" variant="destructive" disabled={isPending}>
-              Delete
-              {isPending && <LoaderCircle className="animate-spin" />}
+              {isPending ? (
+                <>
+                  Deleting
+                  <LoaderCircle className="size-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Delete
+                  <TrashIcon className="size-4" />
+                </>
+              )}
             </Button>
           </AlertDialogFooter>
         </form>

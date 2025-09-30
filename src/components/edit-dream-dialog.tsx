@@ -55,7 +55,7 @@ export function EditDreamDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="rounded-xl">
+        <Button variant="outline" className="gap-2">
           <Pencil className="size-4" />
           Edit
         </Button>
@@ -64,7 +64,7 @@ export function EditDreamDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Edit Dream Log</AlertDialogTitle>
           <AlertDialogDescription>
-            Edit the essentials for your dream journal entry.
+            Make changes to your dream journal entry.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form action={formAction} className="space-y-4">
@@ -76,6 +76,7 @@ export function EditDreamDialog({
               name="description"
               defaultValue={description || ""}
               placeholder="Write the highlights of your dream..."
+              className="min-h-32"
               required
             />
           </div>
@@ -98,7 +99,7 @@ export function EditDreamDialog({
                     hidden
                   />
                   {dreamDateState.toLocaleDateString()}
-                  <ChevronDownIcon />
+                  <ChevronDownIcon className="size-4" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent
@@ -122,16 +123,27 @@ export function EditDreamDialog({
           </div>
           <div className="flex items-center gap-2">
             <Checkbox id="isNap" name="isNap" defaultChecked={isNap} />
-            <Label htmlFor="isNap">Was this a nap?</Label>
+            <Label htmlFor="isNap" className="cursor-pointer">
+              Was this a nap?
+            </Label>
           </div>
           <AlertDialogFooter>
-            {!result.success && (
+            {!result.success && result.message && (
               <p className="text-sm text-destructive">{result.message}</p>
             )}
             <AlertDialogCancel type="button">Cancel</AlertDialogCancel>
             <Button type="submit" disabled={isPending}>
-              Save
-              {isPending && <LoaderCircle className="animate-spin" />}
+              {isPending ? (
+                <>
+                  Saving
+                  <LoaderCircle className="size-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Save Changes
+                  <Pencil className="size-4" />
+                </>
+              )}
             </Button>
           </AlertDialogFooter>
         </form>
