@@ -107,7 +107,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen">
-      <section className="container mx-auto max-w-6xl space-y-12 px-6 py-24 md:px-12">
+      <section className="container mx-auto max-w-6xl space-y-24 px-6 py-24 md:px-12">
         <div className="mx-auto max-w-3xl space-y-6 text-center">
           <div className="space-y-4">
             <Badge variant="outline">
@@ -136,22 +136,32 @@ export default function HomePage() {
           </div>
         </div>
 
-        <section className="grid gap-8 lg:grid-cols-[1.7fr_1fr]">
-          <div className="space-y-6">
+        <section className="space-y-12">
+          <div className="space-y-4 text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Everything you need to understand your dreams
+            </h2>
+            <p className="text-muted-foreground">
+              Powerful tools that work together to help you capture, analyze,
+              and reflect on your dream life.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {primaryFeatures.map((feature) => {
               const Icon = feature.icon;
               return (
-                <Card key={feature.title}>
-                  <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                      <Icon className="h-6 w-6" />
+                <Card key={feature.title} className="border-2">
+                  <CardHeader>
+                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
+                      <Icon className="h-7 w-7 text-primary" />
                     </div>
-                    <div className="space-y-1">
-                      <CardDescription className="text-xs uppercase tracking-wider">
-                        {feature.tagline}
-                      </CardDescription>
-                      <CardTitle className="text-lg">{feature.title}</CardTitle>
-                    </div>
+                    <CardTitle className="mt-4 text-xl">
+                      {feature.title}
+                    </CardTitle>
+                    <CardDescription className="text-xs uppercase tracking-wider">
+                      {feature.tagline}
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
@@ -162,134 +172,232 @@ export default function HomePage() {
               );
             })}
           </div>
-          <aside className="space-y-6">
-            <Card className="h-full">
-              <CardHeader>
-                <CardDescription className="text-xs uppercase tracking-wider">
-                  Supporting insights
-                </CardDescription>
-                <CardTitle>Features you&apos;ll love</CardTitle>
-              </CardHeader>
-              <CardContent className="grid flex-1 gap-4 md:grid-cols-2 lg:grid-cols-1">
-                {supportingFeatures.map((feature) => {
-                  const Icon = feature.icon;
-                  return (
-                    <div
-                      key={feature.title}
-                      className="flex flex-row items-center gap-3"
-                    >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <div className="space-y-1">
-                        <p className="font-semibold text-sm">{feature.title}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {feature.tagline}
-                        </p>
-                      </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {supportingFeatures.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <Card key={feature.title}>
+                  <CardHeader className="flex flex-row items-center gap-3 space-y-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
+                      <Icon className="h-5 w-5" />
                     </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-          </aside>
+                    <div className="space-y-1">
+                      <CardTitle className="text-base">
+                        {feature.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs">
+                        {feature.tagline}
+                      </CardDescription>
+                    </div>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
         </section>
 
         <section>
-          <Card>
-            <CardContent className="grid gap-12 p-8 md:grid-cols-2">
-              <div className="space-y-8">
-                <div className="space-y-4">
-                  <p className="text-sm uppercase tracking-wider text-muted-foreground">
-                    Benefits
-                  </p>
-                  <h3 className="text-3xl font-bold">
-                    Transform your dreams into meaningful insights
-                  </h3>
+          <Card className="overflow-hidden border-2">
+            <CardContent className="grid gap-12 p-8 lg:grid-cols-2 lg:gap-16 lg:p-12">
+              <div className="space-y-12">
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                    Your dreams deserve attention
+                  </h2>
                   <p className="text-muted-foreground">
-                    Capture your dreams and transform them into meaningful
-                    insights with thoughtful summaries, helpful visualizations,
-                    and personalized analysis.
+                    Build a deeper connection with your subconscious through
+                    powerful yet simple tools designed for reflection and
+                    growth.
                   </p>
                 </div>
-                <div className="space-y-4">
-                  <Card>
-                    <CardContent className="space-y-2 p-5">
-                      <p className="font-semibold">
-                        Capture before memories fade
-                      </p>
+
+                <div className="space-y-6">
+                  <div className="flex gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <Moon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-semibold">Never Lose a Dream</h3>
                       <p className="text-sm text-muted-foreground">
-                        Record text, voice, or sketches while details stay vivid
-                        so every symbol remains within reach.
+                        Wake up and immediately capture fleeting memories with
+                        text, voice notes, or quick sketches.
                       </p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="space-y-2 p-5">
-                      <p className="font-semibold">Let insights come to you</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <Sparkles className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-semibold">
+                        Discover Hidden Patterns
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        Dreamy organizes entries automatically, surfacing the
-                        tags, motifs, and characters that repeat across nights.
+                        Automatic tagging reveals recurring themes, symbols, and
+                        characters across nights.
                       </p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="space-y-2 p-5">
-                      <p className="font-semibold">
-                        Notice how you feel over time
-                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <Map className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-semibold">
+                        Track Your Inner Journey
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        Follow moodlines, pattern nudges, and tranquil stats to
-                        understand how rest echoes through your days.
+                        Visualize emotional patterns and dream frequency over
+                        time with beautiful charts.
                       </p>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <aside className="flex flex-col gap-6">
-                <Card className="flex-1">
-                  <CardContent className="space-y-4 p-6">
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                      A nightly ritual
-                    </p>
-                    <p className="text-lg">
-                      &quot;Dreamy catches my half-awake notes, sorts them into
-                      patterns, and shows me the moods pulsing through each
-                      week.&quot;
-                    </p>
+
+              <div className="space-y-4">
+                <Card className="bg-gradient-to-br from-primary/5 to-transparent">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <Bell className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-lg">
+                        Stay Mindfully Aware
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      - The Dreamy Team
+                      Gentle notifications when meaningful symbols reappear.
+                      Reflect on what your subconscious is trying to tell you.
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="flex-1">
-                  <CardContent className="space-y-4 p-6">
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                      Nightly glance
+
+                <Card className="bg-gradient-to-br from-primary/5 to-transparent">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <ImageIcon className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-lg">
+                        Visualize Your Dreams
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Transform written entries into beautiful, AI-generated
+                      artwork that captures the essence of your adventures.
                     </p>
-                    <ul className="space-y-3 text-sm text-muted-foreground">
-                      <li className="flex items-start gap-3">
-                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                        <span>
-                          Emotional tone tracing how each night feels.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                        <span>
-                          Pattern prompts when familiar symbols reappear.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                        <span>
-                          Dream art and summaries ready to revisit anytime.
-                        </span>
-                      </li>
-                    </ul>
                   </CardContent>
                 </Card>
-              </aside>
+
+                <Card className="bg-gradient-to-br from-primary/5 to-transparent">
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <Link2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <CardTitle className="text-lg">
+                        Connect Day & Night
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      Link dreams to daily events, habits, and moods to discover
+                      what influences your sleep.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-3">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Moon className="h-5 w-5 text-primary" />
+                Private & Secure
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Your dreams are personal. All entries are encrypted and stored
+                securely. Only you have access.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Sparkles className="h-5 w-5 text-primary" />
+                Works Everywhere
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Capture dreams on any device. Sync seamlessly across phone,
+                tablet, and desktop.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Tags className="h-5 w-5 text-primary" />
+                Free to Start
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Begin your dream journey at no cost. Upgrade anytime for
+                advanced insights and features.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section>
+          <Card className="border-2 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
+            <CardContent className="flex flex-col items-center gap-6 p-12 text-center">
+              <div className="space-y-4">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
+                  <Moon className="h-8 w-8 text-primary" />
+                </div>
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                  Ready to explore your dreams?
+                </h2>
+                <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+                  Join Dreamy today and start uncovering the patterns, emotions,
+                  and insights hidden in your nightly adventures.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button asChild size="lg" className="text-base">
+                  <Link href="/sign-up">
+                    Sign Up
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="text-base"
+                >
+                  <Link href="/dashboard">Start Exploring</Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </section>
