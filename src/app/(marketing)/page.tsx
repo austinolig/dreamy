@@ -97,14 +97,6 @@ const features = [
   },
 ];
 
-const floatingLights = [
-  { top: "12%", left: "8%" },
-  { top: "28%", left: "82%" },
-  { top: "68%", left: "18%" },
-  { top: "78%", left: "72%" },
-  { top: "42%", left: "48%" },
-];
-
 export default function HomePage() {
   const primaryFeatures = features.filter(
     (feature) => feature.type === "primary"
@@ -114,42 +106,28 @@ export default function HomePage() {
   );
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#050315] via-[#0d0b2f] to-[#141130] text-slate-100">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.18),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(56,189,248,0.12),_transparent_60%)]" />
-
-      {floatingLights.map((position, index) => (
-        <span
-          key={`${position.top}-${position.left}`}
-          className="pointer-events-none absolute h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/20 blur-3xl animate-orb"
-          style={{
-            top: position.top,
-            left: position.left,
-            animationDelay: `${index * 0.25}s`,
-          }}
-        />
-      ))}
-
-      <section className="relative mx-auto flex min-h-screen max-w-6xl flex-col gap-20 px-6 pb-24 pt-24 md:px-12">
-        <div className="space-y-6 mt-6 mx-auto max-w-3xl text-center animate-fade-up">
-          <div>
+    <main className="min-h-screen">
+      <section className="container mx-auto max-w-6xl space-y-12 px-6 py-24 md:px-12">
+        <div className="mx-auto max-w-3xl space-y-6 text-center">
+          <div className="space-y-4">
             <Badge variant="outline">
               <Sparkles className="h-4 w-4" />
               Dream Insights & Analysis
             </Badge>
-            <h1 className="text-[80px] sm:text-[120px] md:text-[160px] font-light tracking-tight leading-tight  text-white">
+            <h1 className="text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl">
               Dreamy
             </h1>
           </div>
-          <p className="text-lg text-slate-200/80 md:text-xl">
+          <p className="text-lg text-muted-foreground md:text-xl">
             Capture dreams and transform them into meaningful insights with
             thoughtful summaries, helpful visualizations, and personalized
             analysis.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="group">
+            <Button asChild size="lg">
               <Link href="/dashboard">
                 Start Exploring
-                <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                <ChevronRight className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
@@ -158,31 +136,25 @@ export default function HomePage() {
           </div>
         </div>
 
-        <section id="features" className="grid gap-8 lg:grid-cols-[1.7fr_1fr]">
+        <section className="grid gap-8 lg:grid-cols-[1.7fr_1fr]">
           <div className="space-y-6">
-            {primaryFeatures.map((feature, index) => {
+            {primaryFeatures.map((feature) => {
               const Icon = feature.icon;
               return (
-                <Card
-                  key={feature.title}
-                  className="animate-fade-up"
-                  style={{ animationDelay: `${index * 0.12 + 0.18}s` }}
-                >
-                  <CardHeader className="flex items-center gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/20 text-indigo-200">
-                      <Icon className="h-7 w-7" />
+                <Card key={feature.title}>
+                  <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                      <Icon className="h-6 w-6" />
                     </div>
                     <div className="space-y-1">
-                      <CardDescription className="text-xs uppercase tracking-[0.35em] text-indigo-100/70">
+                      <CardDescription className="text-xs uppercase tracking-wider">
                         {feature.tagline}
                       </CardDescription>
-                      <CardTitle className="text-xl font-light text-white">
-                        {feature.title}
-                      </CardTitle>
+                      <CardTitle className="text-lg">{feature.title}</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-base text-muted-foreground">
+                    <p className="text-sm text-muted-foreground">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -191,73 +163,59 @@ export default function HomePage() {
             })}
           </div>
           <aside className="space-y-6">
-            <Card
-              className="animate-fade-up"
-              style={{ animationDelay: "0.54s" }}
-            >
+            <Card className="h-full">
               <CardHeader>
-                <CardDescription className="text-xs uppercase tracking-[0.35em] text-indigo-100/70">
+                <CardDescription className="text-xs uppercase tracking-wider">
                   Supporting insights
                 </CardDescription>
                 <CardTitle>Features you&apos;ll love</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="grid gap-4">
-                  {supportingFeatures.map((feature, index) => {
-                    const Icon = feature.icon;
-                    return (
-                      <Card
-                        key={feature.title}
-                        className="animate-fade-up py-0"
-                        style={{ animationDelay: `${index * 0.05 + 0.6}s` }}
-                      >
-                        <CardHeader className="flex items-center gap-4 p-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-200">
-                            <Icon className="h-4 w-4" />
-                          </div>
-                          <div>
-                            <CardTitle className="text-sm font-light text-white">
-                              {feature.title}
-                            </CardTitle>
-                            <CardDescription className="text-xs text-muted-foreground">
-                              {feature.tagline}
-                            </CardDescription>
-                          </div>
-                        </CardHeader>
-                      </Card>
-                    );
-                  })}
-                </div>
+              <CardContent className="grid flex-1 gap-4 md:grid-cols-2 lg:grid-cols-1">
+                {supportingFeatures.map((feature) => {
+                  const Icon = feature.icon;
+                  return (
+                    <div
+                      key={feature.title}
+                      className="flex flex-row items-center gap-3"
+                    >
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="font-semibold text-sm">{feature.title}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {feature.tagline}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </CardContent>
             </Card>
           </aside>
         </section>
 
-        <section
-          id="benefits"
-          className="animate-fade-up"
-          style={{ animationDelay: "0.82s" }}
-        >
-          <Card className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br from-white/10 via-white/5 to-transparent p-10 backdrop-blur">
-            <CardContent className="grid gap-12 p-0 md:grid-cols-[1.15fr_0.85fr] lg:grid-cols-[1.4fr_1fr]">
-              <div className="flex flex-col gap-10">
+        <section>
+          <Card>
+            <CardContent className="grid gap-12 p-8 md:grid-cols-2">
+              <div className="space-y-8">
                 <div className="space-y-4">
-                  <p className="text-sm uppercase tracking-[0.3em] text-indigo-200/70">
+                  <p className="text-sm uppercase tracking-wider text-muted-foreground">
                     Benefits
                   </p>
-                  <h3 className="text-3xl font-light text-white md:text-4xl">
+                  <h3 className="text-3xl font-bold">
                     Transform your dreams into meaningful insights
                   </h3>
-                  <p className="text-base text-muted-foreground">
+                  <p className="text-muted-foreground">
                     Capture your dreams and transform them into meaningful
                     insights with thoughtful summaries, helpful visualizations,
                     and personalized analysis.
                   </p>
                 </div>
-                <div className="grid gap-6">
-                  <Card className="h-full rounded-2xl border-white/10 bg-white/5 p-5">
-                    <CardContent className="flex h-full flex-col justify-between gap-3 p-0">
-                      <p className="text-sm font-medium text-white">
+                <div className="space-y-4">
+                  <Card>
+                    <CardContent className="space-y-2 p-5">
+                      <p className="font-semibold">
                         Capture before memories fade
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -266,20 +224,18 @@ export default function HomePage() {
                       </p>
                     </CardContent>
                   </Card>
-                  <Card className="h-full rounded-2xl border-white/10 bg-white/5 p-5">
-                    <CardContent className="flex h-full flex-col justify-between gap-3 p-0">
-                      <p className="text-sm font-medium text-white">
-                        Let insights come to you
-                      </p>
+                  <Card>
+                    <CardContent className="space-y-2 p-5">
+                      <p className="font-semibold">Let insights come to you</p>
                       <p className="text-sm text-muted-foreground">
                         Dreamy organizes entries automatically, surfacing the
                         tags, motifs, and characters that repeat across nights.
                       </p>
                     </CardContent>
                   </Card>
-                  <Card className="h-full rounded-2xl border-white/10 bg-white/5 p-5">
-                    <CardContent className="flex h-full flex-col justify-between gap-3 p-0">
-                      <p className="text-sm font-medium text-white">
+                  <Card>
+                    <CardContent className="space-y-2 p-5">
+                      <p className="font-semibold">
                         Notice how you feel over time
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -290,42 +246,42 @@ export default function HomePage() {
                   </Card>
                 </div>
               </div>
-              <aside className="relative flex flex-col gap-6 border-t border-white/10 pt-6 md:border-l md:border-t-0 md:pl-6 md:pt-0">
-                <Card className="relative overflow-hidden rounded-3xl bg-indigo-500/10 p-6">
-                  <CardContent className="space-y-5 p-0">
-                    <p className="text-xs uppercase tracking-[0.4em] text-indigo-100/80">
-                      a nightly ritual
+              <aside className="flex flex-col gap-6">
+                <Card className="flex-1">
+                  <CardContent className="space-y-4 p-6">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                      A nightly ritual
                     </p>
-                    <p className="text-lg text-white">
+                    <p className="text-lg">
                       &quot;Dreamy catches my half-awake notes, sorts them into
                       patterns, and shows me the moods pulsing through each
                       week.&quot;
                     </p>
-                    <p className="text-sm text-indigo-100/80">
+                    <p className="text-sm text-muted-foreground">
                       - The Dreamy Team
                     </p>
                   </CardContent>
                 </Card>
-                <Card className="rounded-3xl border border-white/10 bg-[#050315]/50 p-6">
-                  <CardContent className="space-y-4 p-0 text-left">
-                    <p className="text-xs uppercase tracking-[0.4em] text-indigo-100/70">
-                      nightly glance
+                <Card className="flex-1">
+                  <CardContent className="space-y-4 p-6">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                      Nightly glance
                     </p>
                     <ul className="space-y-3 text-sm text-muted-foreground">
                       <li className="flex items-start gap-3">
-                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-200" />
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
                         <span>
                           Emotional tone tracing how each night feels.
                         </span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-200" />
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
                         <span>
                           Pattern prompts when familiar symbols reappear.
                         </span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-200" />
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
                         <span>
                           Dream art and summaries ready to revisit anytime.
                         </span>

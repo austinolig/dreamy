@@ -69,7 +69,7 @@ export function SignUpForm({
               />
             </div>
             <div className="flex flex-col gap-3">
-              {message && <p className="text-red-500 text-sm">{message}</p>}
+              {message && <p className="text-sm text-destructive">{message}</p>}
               <Button type="submit" className="w-full" disabled={isPending}>
                 Sign Up
                 {isPending && <LoaderCircle className="animate-spin" />}
