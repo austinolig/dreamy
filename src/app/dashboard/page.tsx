@@ -55,40 +55,41 @@ export default async function Page() {
       {/* Stats Section */}
       {totalDreams > 0 && (
         <div className="grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <SparklesIcon className="size-5 text-primary" />
+            </div>
+            <div className="flex-1 space-y-1">
+              <p className="min-w-max text-sm font-medium text-muted-foreground">
                 Total Dreams
-              </CardTitle>
-              <SparklesIcon className="size-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{totalDreams}</div>
-              <p className="text-xs text-muted-foreground">Dreams captured</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              </p>
+              <p className="text-3xl font-bold tracking-tight">{totalDreams}</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <MoonIcon className="size-5 text-primary" />
+            </div>
+            <div className="flex-1 space-y-1">
+              <p className="min-w-max text-sm font-medium text-muted-foreground">
                 Overnight Dreams
-              </CardTitle>
-              <MoonIcon className="size-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{overnightCount}</div>
-              <p className="text-xs text-muted-foreground">Night journeys</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Nap Dreams</CardTitle>
-              <SunIcon className="size-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{napCount}</div>
-              <p className="text-xs text-muted-foreground">Afternoon visions</p>
-            </CardContent>
-          </Card>
+              </p>
+              <p className="text-3xl font-bold tracking-tight">
+                {overnightCount}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+            <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
+              <SunIcon className="size-5 text-primary" />
+            </div>
+            <div className="flex-1 space-y-1">
+              <p className="min-w-max text-sm font-medium text-muted-foreground">
+                Nap Dreams
+              </p>
+              <p className="text-3xl font-bold tracking-tight">{napCount}</p>
+            </div>
+          </div>
         </div>
       )}
 
