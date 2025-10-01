@@ -119,7 +119,7 @@ export default async function Page() {
             {dreamLogs.map((dream) => (
               <Card
                 key={dream.id}
-                className="group relative overflow-hidden transition-shadow hover:shadow-lg"
+                className="group hover:border-primary/50 relative overflow-hidden transition-shadow hover:shadow-lg"
               >
                 <Link
                   href={`/dashboard/logs/${dream.id}`}
@@ -133,7 +133,7 @@ export default async function Page() {
                   <div className="flex items-start justify-between gap-2">
                     <div className="space-y-1 flex-1 min-w-0">
                       <CardTitle className="text-lg font-semibold line-clamp-1">
-                        {format(dream.dreamDate, "EEEE, MMM d")}
+                        {dream.description}
                       </CardTitle>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         {dream.isNap ? (
@@ -149,7 +149,7 @@ export default async function Page() {
                 </CardHeader>
                 <CardContent className="relative space-y-3">
                   <p className="text-sm text-muted-foreground line-clamp-4 leading-relaxed">
-                    {dream.description}
+                    {format(dream.dreamDate, "EEEE, MMM d")}
                   </p>
                 </CardContent>
                 {dream.tags.length > 0 && (

@@ -84,14 +84,12 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-2 flex-1">
               <CardTitle className="text-2xl md:text-3xl font-bold">
-                {format(dreamLog.dreamDate, "EEEE, MMMM d, yyyy")}
+                Dream Log #{dreamLog.id}
               </CardTitle>
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <CalendarIcon className="size-4" />
-                  <span>
-                    Logged {format(dreamLog.createdAt, "MMM d, yyyy")}
-                  </span>
+                  <span>{format(dreamLog.createdAt, "EEE, MMM d")}</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ClockIcon className="size-4" />
@@ -111,7 +109,7 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-6 py-8 px-6 md:px-8">
+        <CardContent className="space-y-6">
           {/* Dream Type Indicator */}
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
             {dreamLog.isNap ? (

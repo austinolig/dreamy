@@ -58,7 +58,12 @@ export function EditDreamDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" size="icon" className="gap-2 md:hidden">
+          <Pencil className="size-4" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline" className="gap-2 hidden md:flex">
           <Pencil className="size-4" />
           Edit
         </Button>
