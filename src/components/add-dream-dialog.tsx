@@ -22,24 +22,37 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { createDreamLog } from "@/lib/actions";
+import { createDreamLog, getUserTags } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
+import { TagInput } from "@/components/tag-input";
 
 export function AddDreamDialog() {
   const [open, setOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [dreamDate, setDreamDate] = useState<Date>(new Date());
   const [sleepType, setSleepType] = useState<"sleep" | "nap">("sleep");
+  const [existingTags, setExistingTags] = useState<
+    Array<{ id: number; name: string }>
+  >([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const [result, formAction, isPending] = useActionState(createDreamLog, {
     success: false,
     message: "",
   });
 
+  // Fetch existing tags when dialog opens
+  useEffect(() => {
+    if (open) {
+      getUserTags().then(setExistingTags);
+    }
+  }, [open]);
+
   useEffect(() => {
     result.message = "";
     if (result.success) {
       setOpen(false);
+      setSelectedTags([]); // Clear selected tags on success
     }
   }, [result]);
 
@@ -142,6 +155,15 @@ export function AddDreamDialog() {
               type="hidden"
               name="isNap"
               value={sleepType === "nap" ? "on" : ""}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Tags (optional)</Label>
+            <TagInput
+              existingTags={existingTags}
+              selectedTags={selectedTags}
+              onChange={setSelectedTags}
+              name="tags"
             />
           </div>
           <AlertDialogFooter>

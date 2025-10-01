@@ -75,18 +75,56 @@ export const createDreamLog = async (
   const description = formData.get("description");
   const dreamDate = formData.get("dreamDate");
   const isNap = formData.get("isNap");
+  const tagsString = formData.get("tags");
 
   if (!description || !dreamDate) {
     return { success: false, message: "Missing required fields" };
   }
 
   try {
+    // Parse tags from comma-separated string
+    const tagNames = tagsString
+      ? tagsString
+          .toString()
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0)
+      : [];
+
+    // Find or create tags
+    const tagConnections = await Promise.all(
+      tagNames.map(async (tagName) => {
+        // First, try to find an existing tag for this user
+        let tag = await prisma.tag.findFirst({
+          where: {
+            name: tagName,
+            userId: session.user.id,
+          },
+        });
+
+        // If tag doesn't exist, create it
+        if (!tag) {
+          tag = await prisma.tag.create({
+            data: {
+              name: tagName,
+              userId: session.user.id,
+            },
+          });
+        }
+
+        return { id: tag.id };
+      })
+    );
+
     await prisma.dreamLog.create({
       data: {
         description: description.toString(),
         dreamDate: new Date(dreamDate.toString()),
         isNap: isNap === "on",
         userId: session.user.id,
+        tags: {
+          connect: tagConnections,
+        },
       },
     });
   } catch (error) {
@@ -114,6 +152,7 @@ export const updateDreamLog = async (
   const description = formData.get("description");
   const dreamDate = formData.get("dreamDate");
   const isNap = formData.get("isNap");
+  const tagsString = formData.get("tags");
 
   if (description === null) {
     return { success: false, message: "Missing description" };
@@ -124,12 +163,50 @@ export const updateDreamLog = async (
   }
 
   try {
+    // Parse tags from comma-separated string
+    const tagNames = tagsString
+      ? tagsString
+          .toString()
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0)
+      : [];
+
+    // Find or create tags
+    const tagConnections = await Promise.all(
+      tagNames.map(async (tagName) => {
+        // First, try to find an existing tag for this user
+        let tag = await prisma.tag.findFirst({
+          where: {
+            name: tagName,
+            userId: session.user.id,
+          },
+        });
+
+        // If tag doesn't exist, create it
+        if (!tag) {
+          tag = await prisma.tag.create({
+            data: {
+              name: tagName,
+              userId: session.user.id,
+            },
+          });
+        }
+
+        return { id: tag.id };
+      })
+    );
+
     await prisma.dreamLog.update({
       where: { id: Number(id), userId: session.user.id },
       data: {
         description: description.toString(),
         dreamDate: new Date(dreamDate.toString()),
         isNap: isNap === "on",
+        tags: {
+          set: [], // Clear existing tags first
+          connect: tagConnections, // Then connect the new ones
+        },
       },
     });
   } catch (error) {
@@ -170,4 +247,30 @@ export const deleteDreamLog = async (
 
   revalidatePath("/dashboard");
   return { success: true, message: "Dream log deleted successfully" };
+};
+
+export const getUserTags = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user.id) {
+    return [];
+  }
+
+  try {
+    const tags = await prisma.tag.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    return tags;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
