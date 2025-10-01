@@ -7,7 +7,6 @@ import {
   IconHelp,
   IconMoon,
   IconPalette,
-  IconSearch,
   IconSettings,
   IconSparkles,
   IconTags,
@@ -48,9 +47,9 @@ const dreamManagement = [
     icon: IconTags,
   },
   {
-    name: "Search Dreams",
-    url: "/dashboard/search",
-    icon: IconSearch,
+    name: "Dream Art",
+    url: "/dashboard/art",
+    icon: IconPalette,
   },
 ];
 
@@ -64,11 +63,6 @@ const analysisInsights = [
     name: "Insights",
     url: "/dashboard/insights",
     icon: IconSparkles,
-  },
-  {
-    name: "Dream Art",
-    url: "/dashboard/art",
-    icon: IconPalette,
   },
 ];
 

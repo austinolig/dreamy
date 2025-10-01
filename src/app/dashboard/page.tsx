@@ -130,17 +130,9 @@ export default async function Page() {
         <>
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <SearchIcon className="size-5 text-primary" />
-                  <CardTitle>Quick Search</CardTitle>
-                </div>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/dashboard/search">
-                    Advanced Search
-                    <ArrowRightIcon className="ml-2 size-4" />
-                  </Link>
-                </Button>
+              <div className="flex items-center gap-2">
+                <SearchIcon className="size-5 text-primary" />
+                <CardTitle>Quick Search</CardTitle>
               </div>
               <CardDescription>
                 Search across all your dreams by content, tags, and themes

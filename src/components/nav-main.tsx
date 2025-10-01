@@ -1,10 +1,9 @@
 "use client";
 
-import { IconMail, type Icon } from "@tabler/icons-react";
+import { type Icon } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,12 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { AddDreamDialog } from "@/components/add-dream-dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { GlobalSearchDialog } from "./global-search-dialog";
 
 export function NavMain({
   items,
@@ -37,26 +31,7 @@ export function NavMain({
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <AddDreamDialog />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    className="size-10 group-data-[collapsible=icon]:opacity-0"
-                    variant="outline"
-                    asChild
-                  >
-                    <Link href="/dashboard/help">
-                      <IconMail />
-                      <span className="sr-only">Help & Feedback</span>
-                    </Link>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Help & Feedback</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <GlobalSearchDialog />
           </SidebarMenuItem>
         </SidebarMenu>
 
