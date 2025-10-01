@@ -110,20 +110,22 @@ export default function HomePage() {
       <section className="container mx-auto max-w-6xl space-y-24 px-6 py-24 md:px-12">
         <div className="mx-auto max-w-3xl space-y-6 text-center">
           <div className="space-y-4">
-            <Badge variant="outline">
-              <Sparkles className="h-4 w-4" />
-              Dream Insights & Analysis
-            </Badge>
-            <h1 className="text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl">
+            <div className="animate-fade-in-up">
+              <Badge variant="outline">
+                <Sparkles className="h-4 w-4" />
+                Dream Insights & Analysis
+              </Badge>
+            </div>
+            <h1 className="animate-fade-in-up animation-delay-100 text-6xl font-bold tracking-tight sm:text-7xl md:text-8xl">
               Dreamy
             </h1>
           </div>
-          <p className="text-lg text-muted-foreground md:text-xl">
+          <p className="animate-fade-in-up animation-delay-200 text-lg text-muted-foreground md:text-xl">
             Capture dreams and transform them into meaningful insights with
             thoughtful summaries, helpful visualizations, and personalized
             analysis.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="animate-fade-in-up animation-delay-300 flex flex-wrap items-center justify-center gap-4">
             <Button asChild size="lg">
               <Link href="/dashboard">
                 Start Exploring
@@ -136,7 +138,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <section className="space-y-12">
+        <section className="animate-fade-in-up animation-delay-400 space-y-12">
           <div className="space-y-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Everything you need to understand your dreams
@@ -148,10 +150,16 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {primaryFeatures.map((feature) => {
+            {primaryFeatures.map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <Card key={feature.title} className="border-2">
+                <Card
+                  key={feature.title}
+                  className="animate-fade-in-up border-2"
+                  style={{
+                    animationDelay: `${500 + idx * 100}ms`,
+                  }}
+                >
                   <CardHeader>
                     <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10">
                       <Icon className="h-7 w-7 text-primary" />
@@ -174,10 +182,16 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {supportingFeatures.map((feature) => {
+            {supportingFeatures.map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <Card key={feature.title}>
+                <Card
+                  key={feature.title}
+                  className="animate-fade-in"
+                  style={{
+                    animationDelay: `${800 + idx * 50}ms`,
+                  }}
+                >
                   <CardHeader className="flex flex-row items-center gap-3 space-y-0">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
                       <Icon className="h-5 w-5" />
@@ -197,7 +211,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section>
+        <section className="animate-fade-in-up animation-delay-400">
           <Card className="overflow-hidden border-2">
             <CardContent className="grid gap-12 p-8 lg:grid-cols-2 lg:gap-16 lg:p-12">
               <div className="space-y-12">
@@ -321,7 +335,7 @@ export default function HomePage() {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-3">
-          <Card>
+          <Card className="animate-fade-in-up animation-delay-300">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Moon className="h-5 w-5 text-primary" />
@@ -336,7 +350,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="animate-fade-in-up animation-delay-400">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Sparkles className="h-5 w-5 text-primary" />
@@ -351,7 +365,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="animate-fade-in-up animation-delay-500">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Tags className="h-5 w-5 text-primary" />
@@ -367,7 +381,7 @@ export default function HomePage() {
           </Card>
         </section>
 
-        <section>
+        <section className="animate-fade-in-up animation-delay-400">
           <Card className="border-2 bg-gradient-to-br from-primary/10 via-primary/5 to-background">
             <CardContent className="flex flex-col items-center gap-6 p-12 text-center">
               <div className="space-y-4">
