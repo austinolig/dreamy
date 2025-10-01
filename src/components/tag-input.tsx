@@ -36,7 +36,6 @@ export function TagInput({
     const value = e.target.value;
     setInputValue(value);
 
-    // Filter existing tags based on input
     if (value.trim()) {
       const filtered = existingTags.filter(
         (tag) =>
@@ -73,7 +72,6 @@ export function TagInput({
         addTag(inputValue);
       }
     } else if (e.key === "Backspace" && !inputValue && tags.length > 0) {
-      // Remove last tag when backspace is pressed with empty input
       removeTag(tags[tags.length - 1]);
     }
   };
@@ -105,11 +103,9 @@ export function TagInput({
             <Plus className="size-4" />
           </Button>
         </div>
-        {/* Hidden input to store tags as comma-separated values */}
         <input type="hidden" name={name} value={tags.join(",")} />
       </div>
 
-      {/* Selected tags */}
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
@@ -127,7 +123,6 @@ export function TagInput({
         </div>
       )}
 
-      {/* Tag suggestions */}
       {suggestions.length > 0 && (
         <div className="rounded-md border bg-popover p-2">
           <p className="mb-2 text-xs text-muted-foreground">

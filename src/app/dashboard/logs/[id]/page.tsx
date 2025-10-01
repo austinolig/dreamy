@@ -57,7 +57,6 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
 
   return (
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
-      {/* Navigation */}
       <div className="flex items-center justify-between">
         <Button asChild variant="ghost" size="sm" className="gap-2">
           <Link href="/dashboard">
@@ -78,7 +77,6 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
         </Badge>
       </div>
 
-      {/* Main Content Card */}
       <Card className="overflow-hidden">
         <CardHeader className="space-y-4">
           <div className="flex items-start justify-between gap-4">
@@ -111,7 +109,6 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          {/* Dream Type Indicator */}
           <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
             {dreamLog.isNap ? (
               <>
@@ -128,7 +125,6 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
 
           <Separator />
 
-          {/* Dream Description */}
           <div className="space-y-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Dream Journal Entry
@@ -139,7 +135,6 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
           </div>
         </CardContent>
 
-        {/* Tags Footer */}
         {dreamLog.tags.length > 0 && (
           <CardFooter className="flex flex-col items-start gap-3 border-t py-4">
             <h3 className="text-sm font-semibold text-muted-foreground">

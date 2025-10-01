@@ -289,8 +289,8 @@ export default async function Page() {
                     <span className="font-medium text-sm">Dream Frequency</span>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    You're averaging {(totalDreams / 30).toFixed(1)} dreams per
-                    month. Consistent journaling helps capture more dream
+                    You&apos;re averaging {(totalDreams / 30).toFixed(1)} dreams
+                    per month. Consistent journaling helps capture more dream
                     memories!
                   </p>
                 </div>

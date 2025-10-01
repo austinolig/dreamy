@@ -19,7 +19,6 @@ const routeTitles: Record<string, string> = {
 export function SiteHeader() {
   const pathname = usePathname();
 
-  console.log(pathname);
   const getPageTitle = () => {
     if (routeTitles[pathname]) {
       return routeTitles[pathname];
@@ -29,7 +28,6 @@ export function SiteHeader() {
       return `Dream Log #${pathname.split("/")[3]}`;
     }
 
-    // Default fallback
     return "Dashboard";
   };
 

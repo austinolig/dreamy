@@ -28,7 +28,6 @@ import { User } from "@prisma/client";
 import { Moon } from "lucide-react";
 import { NavGroup } from "@/components/nav-group";
 
-// Overview section
 const navMain = [
   {
     title: "Dashboard",
@@ -37,7 +36,6 @@ const navMain = [
   },
 ];
 
-// Dream Management group
 const dreamManagement = [
   {
     name: "Dream Logs",
@@ -56,7 +54,6 @@ const dreamManagement = [
   },
 ];
 
-// Analysis & Insights group
 const analysisInsights = [
   {
     name: "Analytics",
@@ -75,7 +72,6 @@ const analysisInsights = [
   },
 ];
 
-// Utility section
 const navSecondary = [
   {
     title: "Settings",

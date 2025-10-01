@@ -82,7 +82,6 @@ export const createDreamLog = async (
   }
 
   try {
-    // Parse tags from comma-separated string
     const tagNames = tagsString
       ? tagsString
           .toString()
@@ -91,10 +90,8 @@ export const createDreamLog = async (
           .filter((tag) => tag.length > 0)
       : [];
 
-    // Find or create tags
     const tagConnections = await Promise.all(
       tagNames.map(async (tagName) => {
-        // First, try to find an existing tag for this user
         let tag = await prisma.tag.findFirst({
           where: {
             name: tagName,
@@ -102,7 +99,6 @@ export const createDreamLog = async (
           },
         });
 
-        // If tag doesn't exist, create it
         if (!tag) {
           tag = await prisma.tag.create({
             data: {
@@ -163,7 +159,6 @@ export const updateDreamLog = async (
   }
 
   try {
-    // Parse tags from comma-separated string
     const tagNames = tagsString
       ? tagsString
           .toString()
@@ -172,10 +167,8 @@ export const updateDreamLog = async (
           .filter((tag) => tag.length > 0)
       : [];
 
-    // Find or create tags
     const tagConnections = await Promise.all(
       tagNames.map(async (tagName) => {
-        // First, try to find an existing tag for this user
         let tag = await prisma.tag.findFirst({
           where: {
             name: tagName,
@@ -183,7 +176,6 @@ export const updateDreamLog = async (
           },
         });
 
-        // If tag doesn't exist, create it
         if (!tag) {
           tag = await prisma.tag.create({
             data: {
@@ -204,8 +196,8 @@ export const updateDreamLog = async (
         dreamDate: new Date(dreamDate.toString()),
         isNap: isNap === "on",
         tags: {
-          set: [], // Clear existing tags first
-          connect: tagConnections, // Then connect the new ones
+          set: [],
+          connect: tagConnections,
         },
       },
     });

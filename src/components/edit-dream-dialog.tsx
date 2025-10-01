@@ -57,7 +57,6 @@ export function EditDreamDialog({
     message: "",
   });
 
-  // Fetch existing tags when dialog opens
   useEffect(() => {
     if (open) {
       getUserTags().then(setExistingTags);

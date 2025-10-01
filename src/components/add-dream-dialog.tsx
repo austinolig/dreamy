@@ -42,7 +42,6 @@ export function AddDreamDialog() {
     message: "",
   });
 
-  // Fetch existing tags when dialog opens
   useEffect(() => {
     if (open) {
       getUserTags().then(setExistingTags);
@@ -53,7 +52,7 @@ export function AddDreamDialog() {
     result.message = "";
     if (result.success) {
       setOpen(false);
-      setSelectedTags([]); // Clear selected tags on success
+      setSelectedTags([]);
     }
   }, [result]);
 
