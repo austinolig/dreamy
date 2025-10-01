@@ -103,6 +103,7 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
                 description={dreamLog.description}
                 dreamDate={dreamLog.dreamDate}
                 isNap={dreamLog.isNap}
+                tags={dreamLog.tags}
               />
               <DeleteDreamDialog id={dreamLog.id} redirectPath="/dashboard" />
             </div>

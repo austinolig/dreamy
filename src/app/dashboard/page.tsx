@@ -148,8 +148,8 @@ export default async function Page() {
                     <DeleteDreamDialog id={dream.id} />
                   </div>
                 </CardHeader>
-                <CardContent className="relative space-y-3">
-                  <p className="text-sm text-muted-foreground line-clamp-4 leading-relaxed">
+                <CardContent className="flex relative space-y-3">
+                  <p className="flex-1 self-end text-sm text-muted-foreground line-clamp-4 leading-relaxed">
                     {format(dream.dreamDate, "EEEE, MMM d")}
                   </p>
                 </CardContent>

@@ -39,7 +39,7 @@ export default async function DashboardLayout({
           image: session.user.image || null,
         }}
       />
-      <SidebarInset>
+      <SidebarInset className="h-[calc(100dvh-1rem)] overflow-y-auto overscroll-none">
         <SiteHeader />
         {children}
       </SidebarInset>
