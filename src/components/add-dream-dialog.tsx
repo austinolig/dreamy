@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDownIcon, LoaderCircle, Plus } from "lucide-react";
+import { ChevronDownIcon, LoaderCircle } from "lucide-react";
 
 import {
   AlertDialog,
@@ -25,6 +25,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { createDreamLog, getUserTags } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
 import { TagInput } from "@/components/tag-input";
+import { IconCirclePlusFilled } from "@tabler/icons-react";
 
 export function AddDreamDialog() {
   const [open, setOpen] = useState(false);
@@ -59,8 +60,8 @@ export function AddDreamDialog() {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button className="gap-2">
-          <Plus className="size-4" />
+        <Button className="gap-2 flex-1 justify-start !px-2" size="lg">
+          <IconCirclePlusFilled />
           Add Dream
         </Button>
       </AlertDialogTrigger>

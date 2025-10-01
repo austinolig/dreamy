@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { AddDreamDialog } from "@/components/add-dream-dialog";
 import {
   Card,
   CardContent,
@@ -46,7 +45,7 @@ export default async function Page() {
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
       {/* Header Section */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dream Timeline</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
           Your personal dream journal and exploration space
         </p>
@@ -95,12 +94,9 @@ export default async function Page() {
 
       {/* Dreams Grid */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">
-            {totalDreams === 0 ? "Start Your Journey" : "Recent Dreams"}
-          </h2>
-          <AddDreamDialog />
-        </div>
+        <h2 className="text-xl font-semibold">
+          {totalDreams === 0 ? "Start Your Journey" : "Recent Dreams"}
+        </h2>
 
         {totalDreams === 0 ? (
           <Card className="border-dashed">

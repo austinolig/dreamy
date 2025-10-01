@@ -26,58 +26,68 @@ import {
 } from "@/components/ui/sidebar";
 import { User } from "@prisma/client";
 import { Moon } from "lucide-react";
+import { NavGroup } from "@/components/nav-group";
 
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Dream Logs",
-      url: "/dashboard/logs",
-      icon: IconMoon,
-    },
-    {
-      title: "Tags Manager",
-      url: "/dashboard/tags",
-      icon: IconTags,
-    },
-    {
-      title: "Analytics",
-      url: "/dashboard/analytics",
-      icon: IconChartBar,
-    },
-    {
-      title: "Dream Art",
-      url: "/dashboard/art",
-      icon: IconPalette,
-    },
-    {
-      title: "Insights",
-      url: "/dashboard/insights",
-      icon: IconSparkles,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "/dashboard/settings",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "/dashboard/help",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "/dashboard/search",
-      icon: IconSearch,
-    },
-  ],
-};
+// Overview section
+const navMain = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: IconDashboard,
+  },
+];
+
+// Dream Management group
+const dreamManagement = [
+  {
+    name: "Dream Logs",
+    url: "/dashboard/logs",
+    icon: IconMoon,
+  },
+  {
+    name: "Tags Manager",
+    url: "/dashboard/tags",
+    icon: IconTags,
+  },
+  {
+    name: "Search Dreams",
+    url: "/dashboard/search",
+    icon: IconSearch,
+  },
+];
+
+// Analysis & Insights group
+const analysisInsights = [
+  {
+    name: "Analytics",
+    url: "/dashboard/analytics",
+    icon: IconChartBar,
+  },
+  {
+    name: "Insights",
+    url: "/dashboard/insights",
+    icon: IconSparkles,
+  },
+  {
+    name: "Dream Art",
+    url: "/dashboard/art",
+    icon: IconPalette,
+  },
+];
+
+// Utility section
+const navSecondary = [
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: IconSettings,
+  },
+  {
+    title: "Get Help",
+    url: "/dashboard/help",
+    icon: IconHelp,
+  },
+];
 
 export function AppSidebar({
   user,
@@ -96,8 +106,10 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={navMain} />
+        <NavGroup items={dreamManagement} groupLabel="Dream Management" />
+        <NavGroup items={analysisInsights} groupLabel="Analysis & Insights" />
+        <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser
