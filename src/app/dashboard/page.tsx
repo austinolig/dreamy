@@ -88,7 +88,7 @@ export default async function Page() {
 
       {totalDreams > 0 && (
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-card p-4">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
               <SparklesIcon className="size-5 text-primary" />
             </div>
@@ -99,7 +99,7 @@ export default async function Page() {
               <p className="text-3xl font-bold tracking-tight">{totalDreams}</p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-card p-4">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
               <MoonIcon className="size-5 text-primary" />
             </div>
@@ -112,7 +112,7 @@ export default async function Page() {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/40 p-4">
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-card p-4">
             <div className="flex size-14 shrink-0 items-center justify-center rounded-full bg-primary/10">
               <SunIcon className="size-5 text-primary" />
             </div>
@@ -125,7 +125,6 @@ export default async function Page() {
           </div>
         </div>
       )}
-
       {totalDreams > 0 && (
         <>
           <Card>
@@ -145,6 +144,96 @@ export default async function Page() {
               </div>
             </CardContent>
           </Card>
+
+          {totalDreams === 0 ? (
+            <Card className="border-dashed">
+              <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="rounded-full bg-muted p-4 mb-4">
+                  <MoonIcon className="size-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">No dreams yet</h3>
+                <p className="text-sm text-muted-foreground max-w-sm mb-6">
+                  Begin documenting your dreams and discover patterns in your
+                  subconscious mind. Every journey starts with a single dream.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <SparklesIcon className="size-5 text-primary" />
+                    <CardTitle>Recent Dreams</CardTitle>
+                  </div>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href="/dashboard/logs">
+                      View All Dreams
+                      <ArrowRightIcon className="ml-2 size-4" />
+                    </Link>
+                  </Button>
+                </div>
+                <CardDescription>
+                  Your latest dream journal entries
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {dreamLogs.slice(0, 6).map((dream) => (
+                    <Card
+                      key={dream.id}
+                      className="group hover:border-primary/50 relative overflow-hidden transition-shadow hover:shadow-lg bg-input/30"
+                    >
+                      <Link
+                        href={`/dashboard/logs/${dream.id}`}
+                        className="absolute w-full h-full inset-0 z-1"
+                      >
+                        <span className="sr-only">
+                          Dream Log for {format(dream.dreamDate, "EEE, MMM d")}
+                        </span>
+                      </Link>
+                      <CardHeader className="relative">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="space-y-1 flex-1 min-w-0">
+                            <CardTitle className="text-lg font-semibold line-clamp-1">
+                              {dream.description}
+                            </CardTitle>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              {dream.isNap ? (
+                                <SunIcon className="size-3" />
+                              ) : (
+                                <MoonIcon className="size-3" />
+                              )}
+                              <span>{dream.isNap ? "Nap" : "Overnight"}</span>
+                            </div>
+                          </div>
+                          <DeleteDreamDialog id={dream.id} />
+                        </div>
+                      </CardHeader>
+                      <CardContent className="flex relative space-y-3">
+                        <p className="flex-1 self-end text-sm text-muted-foreground line-clamp-4 leading-relaxed">
+                          {format(dream.dreamDate, "EEEE, MMM d")}
+                        </p>
+                      </CardContent>
+                      {dream.tags.length > 0 && (
+                        <CardFooter className="relative flex flex-wrap gap-2 border-t pt-4">
+                          {dream.tags.map((tag) => (
+                            <Badge
+                              key={tag.id}
+                              variant="secondary"
+                              className="text-xs"
+                            >
+                              {tag.name}
+                            </Badge>
+                          ))}
+                        </CardFooter>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
@@ -323,91 +412,6 @@ export default async function Page() {
           </Card>
         </>
       )}
-
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">
-            {totalDreams === 0 ? "Start Your Journey" : "Recent Dreams"}
-          </h2>
-          {totalDreams > 0 && (
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/dashboard/logs">
-                View All Dreams
-                <ArrowRightIcon className="ml-2 size-4" />
-              </Link>
-            </Button>
-          )}
-        </div>
-
-        {totalDreams === 0 ? (
-          <Card className="border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="rounded-full bg-muted p-4 mb-4">
-                <MoonIcon className="size-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">No dreams yet</h3>
-              <p className="text-sm text-muted-foreground max-w-sm mb-6">
-                Begin documenting your dreams and discover patterns in your
-                subconscious mind. Every journey starts with a single dream.
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {dreamLogs.slice(0, 6).map((dream) => (
-              <Card
-                key={dream.id}
-                className="group hover:border-primary/50 relative overflow-hidden transition-shadow hover:shadow-lg"
-              >
-                <Link
-                  href={`/dashboard/logs/${dream.id}`}
-                  className="absolute w-full h-full inset-0 z-1"
-                >
-                  <span className="sr-only">
-                    Dream Log for {format(dream.dreamDate, "EEE, MMM d")}
-                  </span>
-                </Link>
-                <CardHeader className="relative">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="space-y-1 flex-1 min-w-0">
-                      <CardTitle className="text-lg font-semibold line-clamp-1">
-                        {dream.description}
-                      </CardTitle>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        {dream.isNap ? (
-                          <SunIcon className="size-3" />
-                        ) : (
-                          <MoonIcon className="size-3" />
-                        )}
-                        <span>{dream.isNap ? "Nap" : "Overnight"}</span>
-                      </div>
-                    </div>
-                    <DeleteDreamDialog id={dream.id} />
-                  </div>
-                </CardHeader>
-                <CardContent className="flex relative space-y-3">
-                  <p className="flex-1 self-end text-sm text-muted-foreground line-clamp-4 leading-relaxed">
-                    {format(dream.dreamDate, "EEEE, MMM d")}
-                  </p>
-                </CardContent>
-                {dream.tags.length > 0 && (
-                  <CardFooter className="relative flex flex-wrap gap-2 border-t pt-4">
-                    {dream.tags.map((tag) => (
-                      <Badge
-                        key={tag.id}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {tag.name}
-                      </Badge>
-                    ))}
-                  </CardFooter>
-                )}
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 }
