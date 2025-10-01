@@ -45,7 +45,7 @@ export function DeleteDreamDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button className="relative z-1" variant="outline" size="icon">
+        <Button className="relative z-2" variant="outline" size="icon">
           <TrashIcon className="size-4 text-destructive" />
         </Button>
       </AlertDialogTrigger>
@@ -71,10 +71,7 @@ export function DeleteDreamDialog({
                   <LoaderCircle className="size-4 animate-spin" />
                 </>
               ) : (
-                <>
-                  Delete
-                  <TrashIcon className="size-4" />
-                </>
+                <>Delete</>
               )}
             </Button>
           </AlertDialogFooter>

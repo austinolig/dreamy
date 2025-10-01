@@ -13,7 +13,6 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
@@ -22,6 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { createDreamLog } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
 
@@ -29,6 +29,7 @@ export function AddDreamDialog() {
   const [open, setOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [dreamDate, setDreamDate] = useState<Date>(new Date());
+  const [sleepType, setSleepType] = useState<"sleep" | "nap">("sleep");
 
   const [result, formAction, isPending] = useActionState(createDreamLog, {
     success: false,
@@ -110,11 +111,38 @@ export function AddDreamDialog() {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex items-center gap-2">
-            <Checkbox id="isNap" name="isNap" />
-            <Label htmlFor="isNap" className="cursor-pointer">
-              Was this a nap?
-            </Label>
+          <div className="space-y-2">
+            <Label>Sleep Type</Label>
+            <div className="flex h-9 w-full rounded-md border border-input bg-background p-1">
+              <ToggleGroup
+                type="single"
+                value={sleepType}
+                onValueChange={(value) => {
+                  if (value) setSleepType(value as "sleep" | "nap");
+                }}
+                className="grid w-full grid-cols-2 gap-1"
+              >
+                <ToggleGroupItem
+                  value="sleep"
+                  aria-label="Full sleep"
+                  className="h-full w-full rounded-sm data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=off]:bg-transparent data-[state=off]:hover:bg-accent"
+                >
+                  Full Sleep
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  value="nap"
+                  aria-label="Nap"
+                  className="h-full w-full rounded-sm data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=off]:bg-transparent data-[state=off]:hover:bg-accent"
+                >
+                  Nap
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+            <input
+              type="hidden"
+              name="isNap"
+              value={sleepType === "nap" ? "on" : ""}
+            />
           </div>
           <AlertDialogFooter>
             {!result.success && result.message && (
@@ -128,10 +156,7 @@ export function AddDreamDialog() {
                   <LoaderCircle className="size-4 animate-spin" />
                 </>
               ) : (
-                <>
-                  Save Dream
-                  <Plus className="size-4" />
-                </>
+                <>Save Dream</>
               )}
             </Button>
           </AlertDialogFooter>

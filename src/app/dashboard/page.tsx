@@ -123,7 +123,7 @@ export default async function Page() {
               >
                 <Link
                   href={`/dashboard/logs/${dream.id}`}
-                  className="absolute w-full h-full inset-0 z-0"
+                  className="absolute w-full h-full inset-0 z-1"
                 >
                   <span className="sr-only">
                     Dream Log for {format(dream.dreamDate, "EEE, MMM d")}
