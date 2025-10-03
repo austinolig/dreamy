@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google";
+import { openrouter } from "@openrouter/ai-sdk-provider";
 import { streamText, UIMessage, convertToModelMessages } from "ai";
 
 // Allow streaming responses up to 30 seconds
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: google("gemini-2.5-flash"),
+    model: openrouter("x-ai/grok-4-fast:free"),
     messages: convertToModelMessages(messages),
   });
 
