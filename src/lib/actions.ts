@@ -5,6 +5,7 @@ import { auth } from "./auth";
 import { prisma } from "./prisma";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { DreamLog } from "@prisma/client";
 
 export const signUpEmail = async (
   prevState: string | null,
@@ -61,7 +62,7 @@ export const signInEmail = async (
 };
 
 export const createDreamLog = async (
-  prevState: { success: boolean; message: string },
+  prevState: { success: boolean; message: string; dreamLog?: DreamLog },
   formData: FormData
 ) => {
   const session = await auth.api.getSession({
@@ -112,7 +113,7 @@ export const createDreamLog = async (
       })
     );
 
-    await prisma.dreamLog.create({
+    const dreamLog = await prisma.dreamLog.create({
       data: {
         description: description.toString(),
         dreamDate: new Date(dreamDate.toString()),
@@ -123,13 +124,16 @@ export const createDreamLog = async (
         },
       },
     });
+
+    return {
+      success: true,
+      message: "Dream log created successfully",
+      dreamLog,
+    };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Failed to create dream log" };
   }
-
-  revalidatePath("/dashboard");
-  return { success: true, message: "Dream log created successfully" };
 };
 
 export const updateDreamLog = async (

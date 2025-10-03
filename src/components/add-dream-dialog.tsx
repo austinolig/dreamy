@@ -26,6 +26,7 @@ import { createDreamLog, getUserTags } from "@/lib/actions";
 import { useActionState, useEffect, useState } from "react";
 import { TagInput } from "@/components/tag-input";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export function AddDreamDialog() {
   const [open, setOpen] = useState(false);
@@ -36,6 +37,7 @@ export function AddDreamDialog() {
     Array<{ id: number; name: string }>
   >([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const router = useRouter();
 
   const [result, formAction, isPending] = useActionState(createDreamLog, {
     success: false,
@@ -50,9 +52,10 @@ export function AddDreamDialog() {
 
   useEffect(() => {
     result.message = "";
-    if (result.success) {
+    if (result.success && result.dreamLog?.id) {
       setOpen(false);
       setSelectedTags([]);
+      router.push(`/dashboard/logs/${result.dreamLog?.id}`);
     }
   }, [result]);
 
@@ -81,6 +84,7 @@ export function AddDreamDialog() {
               placeholder="Write the highlights of your dream..."
               className="min-h-32"
               required
+              autoFocus
             />
           </div>
           <div className="space-y-2">

@@ -101,6 +101,7 @@ export function EditDreamDialog({
               placeholder="Write the highlights of your dream..."
               className="min-h-32"
               required
+              autoFocus
             />
           </div>
           <div className="space-y-2">
