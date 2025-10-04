@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Dream Art",
+  description:
+    "Gallery of AI-generated visual interpretations of your dreams. Transform your dreams into beautiful artwork.",
+};
 
 export default async function DreamArtPage() {
   const session = await auth.api.getSession({

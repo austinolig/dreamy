@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Analytics",
+  description:
+    "Visualize patterns, trends, and statistics across your dreams with comprehensive analytics.",
+};
 
 export default async function AnalyticsPage() {
   const session = await auth.api.getSession({

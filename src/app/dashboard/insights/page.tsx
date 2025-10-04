@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Insights",
+  description:
+    "Discover recurring themes, symbols, emotional patterns, and connections across your dream journal.",
+};
 
 export default async function InsightsPage() {
   const session = await auth.api.getSession({

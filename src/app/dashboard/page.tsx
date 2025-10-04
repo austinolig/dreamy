@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import {
@@ -32,7 +33,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import DreamLogCard from "@/components/dream-log-card";
 
-export default async function Page() {
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description:
+    "Your personal dream journal and exploration space. View recent dreams, trends, and insights.",
+};
+
+export default async function OverviewPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -81,7 +88,9 @@ export default async function Page() {
   return (
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {session.user.name?.split(" ")[0]}'s Dashboard
+        </h1>
         <p className="text-muted-foreground">
           Your personal dream journal and exploration space
         </p>

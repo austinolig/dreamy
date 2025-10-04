@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { DreamLogsList } from "@/components/dream-logs-list";
+
+export const metadata: Metadata = {
+  title: "Dream Logs",
+  description:
+    "Browse and manage all your dream entries. Search, filter, and explore your complete dream journal.",
+};
 
 export default async function DreamLogsPage() {
   const session = await auth.api.getSession({

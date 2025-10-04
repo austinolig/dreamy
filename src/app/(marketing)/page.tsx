@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Bell,
   ChevronRight,
@@ -21,6 +22,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Dream Insights & Analysis",
+  description:
+    "Capture dreams and transform them into meaningful insights with thoughtful summaries, helpful visualizations, and personalized analysis.",
+};
 
 const features = [
   {

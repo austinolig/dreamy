@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Get Help",
+  description:
+    "Access documentation, guides, and support resources to make the most of Dreamy.",
+};
 
 export default async function HelpPage() {
   const session = await auth.api.getSession({

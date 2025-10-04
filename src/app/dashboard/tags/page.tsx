@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { TagsList } from "@/components/tags-list";
 import { TagsStats } from "@/components/tags-stats";
 import { prisma } from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Tags Manager",
+  description:
+    "Organize and manage your dream tags, themes, and symbols. View tag statistics and explore related dreams.",
+};
 
 export default async function TagsManagerPage() {
   const session = await auth.api.getSession({

@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description:
+    "Manage your account preferences and application settings. Customize your Dreamy experience.",
+};
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({

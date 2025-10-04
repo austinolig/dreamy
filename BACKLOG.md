@@ -7,3 +7,4 @@ Just some things to do, but not right now...
 - nightscape/starry background elements
 - shareable dream links (private/public flags)
 - save generations to db
+- refactor tags action get request on add-dream-dialog.tsx

@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     template: "%s | Dreamy",
     default: "Dreamy",
   },
-  description: "Dream insights and analysis.",
+  description:
+    "Capture dreams and transform them into meaningful insights with thoughtful summaries, helpful visualizations, and personalized analysis.",
 };
 
 export default function RootLayout({

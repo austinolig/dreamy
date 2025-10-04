@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -29,6 +30,49 @@ import { DreamAnalysisSection } from "@/components/dream-analysis";
 type DreamLogPageProps = {
   params: Promise<{ id: string }>;
 };
+
+export async function generateMetadata({
+  params,
+}: DreamLogPageProps): Promise<Metadata> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return {
+      title: "Dream Log",
+      description: "View your dream journal entry.",
+    };
+  }
+
+  const { id } = await params;
+  const dreamLogId = Number.parseInt(id);
+
+  const dreamLog = await prisma.dreamLog.findFirst({
+    where: {
+      id: dreamLogId,
+      userId: session.user.id,
+    },
+  });
+
+  if (!dreamLog) {
+    return {
+      title: "Dream Not Found",
+      description: "This dream log could not be found.",
+    };
+  }
+
+  const dreamType = dreamLog.isNap ? "Nap" : "Overnight";
+  const dreamDate = format(dreamLog.dreamDate, "MMM d, yyyy");
+
+  return {
+    title: `Dream Log #${dreamLog.id}`,
+    description: `View your ${dreamType.toLowerCase()} dream from ${dreamDate}. ${dreamLog.description.slice(
+      0,
+      120
+    )}${dreamLog.description.length > 120 ? "..." : ""}`,
+  };
+}
 
 export default async function DreamLogPage({ params }: DreamLogPageProps) {
   const session = await auth.api.getSession({
