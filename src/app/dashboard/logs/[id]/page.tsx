@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import { EditDreamDialog } from "@/components/edit-dream-dialog";
 import { DeleteDreamDialog } from "@/components/delete-dream-dialog";
 import { Separator } from "@/components/ui/separator";
+import { DreamAnalysisSection } from "@/components/dream-analysis";
 
 type DreamLogPageProps = {
   params: Promise<{ id: string }>;
@@ -48,6 +49,7 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
     },
     include: {
       tags: true,
+      analysis: true,
     },
   });
 
@@ -150,6 +152,13 @@ export default async function DreamLogPage({ params }: DreamLogPageProps) {
           </CardFooter>
         )}
       </Card>
+
+      <DreamAnalysisSection
+        dreamLogId={dreamLog.id}
+        description={dreamLog.description}
+        isNap={dreamLog.isNap}
+        analysis={dreamLog.analysis}
+      />
     </div>
   );
 }

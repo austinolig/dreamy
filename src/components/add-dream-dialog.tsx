@@ -57,7 +57,7 @@ export function AddDreamDialog() {
       setSelectedTags([]);
       router.push(`/dashboard/logs/${result.dreamLog?.id}`);
     }
-  }, [result]);
+  }, [result, router]);
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>

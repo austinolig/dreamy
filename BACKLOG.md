@@ -6,3 +6,4 @@ Just some things to do, but not right now...
 - Some middleware (better-auth)
 - nightscape/starry background elements
 - shareable dream links (private/public flags)
+- save generations to db
