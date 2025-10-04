@@ -1,9 +1,9 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { getUserTagsWithDreamLogs } from "@/lib/actions";
 import { TagsList } from "@/components/tags-list";
 import { TagsStats } from "@/components/tags-stats";
+import { prisma } from "@/lib/prisma";
 
 export default async function TagsManagerPage() {
   const session = await auth.api.getSession({
@@ -14,7 +14,21 @@ export default async function TagsManagerPage() {
     redirect("/login");
   }
 
-  const tags = await getUserTagsWithDreamLogs();
+  const tags = await prisma.tag.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      dreamLogs: {
+        orderBy: {
+          dreamDate: "desc",
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">

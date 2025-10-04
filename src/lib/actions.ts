@@ -245,6 +245,55 @@ export const deleteDreamLog = async (
   return { success: true, message: "Dream log deleted successfully" };
 };
 
+export const deleteTag = async (
+  prevState: { success: boolean; message: string },
+  formData: FormData
+) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user.id) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  const id = formData.get("id");
+
+  if (!id) {
+    return { success: false, message: "Missing required fields" };
+  }
+
+  try {
+    // Check if tag has any dream logs
+    const tag = await prisma.tag.findUnique({
+      where: { id: Number(id), userId: session.user.id },
+      include: { dreamLogs: true },
+    });
+
+    if (!tag) {
+      return { success: false, message: "Tag not found" };
+    }
+
+    if (tag.dreamLogs.length > 0) {
+      return {
+        success: false,
+        message: "Cannot delete tag with associated dream logs",
+      };
+    }
+
+    await prisma.tag.delete({
+      where: { id: Number(id), userId: session.user.id },
+    });
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Failed to delete tag" };
+  }
+
+  revalidatePath("/dashboard/tags");
+  return { success: true, message: "Tag deleted successfully" };
+};
+
+// TODO (Refactor): GET request + server action === bad
 export const getUserTags = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -261,39 +310,6 @@ export const getUserTags = async () => {
       },
       orderBy: {
         name: "asc",
-      },
-    });
-
-    return tags;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
-export const getUserTagsWithDreamLogs = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user.id) {
-    return [];
-  }
-
-  try {
-    const tags = await prisma.tag.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      include: {
-        dreamLogs: {
-          orderBy: {
-            dreamDate: "desc",
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
       },
     });
 

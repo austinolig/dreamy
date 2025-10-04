@@ -20,28 +20,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-
-type DreamLogSummary = {
-  id: number;
-  description: string;
-  dreamDate: Date;
-  isNap: boolean;
-  createdAt: Date;
-};
-
-type TagWithDreamLogs = {
-  id: number;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  dreamLogs: DreamLogSummary[];
-};
+import { DreamLog, Tag } from "@prisma/client";
+import { DeleteTagDialog } from "@/components/delete-tag-dialog";
 
 type SortField = "name" | "createdAt" | "count";
 type SortOrder = "asc" | "desc";
 
 interface TagsListProps {
-  tags: TagWithDreamLogs[];
+  tags: (Tag & { dreamLogs: DreamLog[] })[];
 }
 
 export function TagsList({ tags }: TagsListProps) {
@@ -219,9 +205,7 @@ export function TagsList({ tags }: TagsListProps) {
                       </PopoverContent>
                     </Popover>
                   ) : (
-                    <span className="text-muted-foreground text-sm">
-                      No dreams
-                    </span>
+                    <DeleteTagDialog id={tag.id} name={tag.name} />
                   )}
                 </TableCell>
               </TableRow>
