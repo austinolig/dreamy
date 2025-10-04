@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,8 +13,6 @@ import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { DeleteDreamDialog } from "@/components/delete-dream-dialog";
-import { format } from "date-fns";
 import {
   MoonIcon,
   SparklesIcon,
@@ -89,7 +86,7 @@ export default async function OverviewPage() {
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          {session.user.name?.split(" ")[0]}'s Dashboard
+          {session.user.name?.split(" ")[0]}&apos;s Dashboard
         </h1>
         <p className="text-muted-foreground">
           Your personal dream journal and exploration space
