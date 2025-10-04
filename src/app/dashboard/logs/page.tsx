@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { DreamLogsList } from "@/components/dream-logs-list";
 
 export default async function DreamLogsPage() {
   const session = await auth.api.getSession({
@@ -11,6 +13,18 @@ export default async function DreamLogsPage() {
     redirect("/login");
   }
 
+  const dreamLogs = await prisma.dreamLog.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      tags: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
       <div className="space-y-2">
@@ -20,11 +34,7 @@ export default async function DreamLogsPage() {
         </p>
       </div>
 
-      <div className="rounded-lg border border-dashed p-8 text-center">
-        <p className="text-muted-foreground">
-          Dream logs list view coming soon...
-        </p>
-      </div>
+      <DreamLogsList dreamLogs={dreamLogs} />
     </div>
   );
 }

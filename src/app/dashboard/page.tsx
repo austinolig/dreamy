@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import DreamLogCard from "@/components/dream-log-card";
 
 export default async function Page() {
   const session = await auth.api.getSession({
@@ -176,55 +177,7 @@ export default async function Page() {
           {totalDreams > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {dreamLogs.slice(0, 6).map((dream) => (
-                <Card
-                  key={dream.id}
-                  className="group hover:border-primary/50 relative overflow-hidden transition-shadow hover:shadow-lg bg-input/30"
-                >
-                  <Link
-                    href={`/dashboard/logs/${dream.id}`}
-                    className="absolute w-full h-full inset-0 z-1"
-                  >
-                    <span className="sr-only">
-                      Dream Log for {format(dream.dreamDate, "EEE, MMM d")}
-                    </span>
-                  </Link>
-                  <CardHeader className="relative">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="space-y-1 flex-1 min-w-0">
-                        <CardTitle className="text-lg font-semibold line-clamp-1">
-                          {dream.description}
-                        </CardTitle>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          {dream.isNap ? (
-                            <SunIcon className="size-3" />
-                          ) : (
-                            <MoonIcon className="size-3" />
-                          )}
-                          <span>{dream.isNap ? "Nap" : "Overnight"}</span>
-                        </div>
-                      </div>
-                      <DeleteDreamDialog id={dream.id} />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex relative space-y-3">
-                    <p className="flex-1 self-end text-sm text-muted-foreground line-clamp-4 leading-relaxed">
-                      {format(dream.dreamDate, "EEEE, MMM d")}
-                    </p>
-                  </CardContent>
-                  {dream.tags.length > 0 && (
-                    <CardFooter className="relative flex flex-wrap gap-2 border-t pt-4">
-                      {dream.tags.map((tag) => (
-                        <Badge
-                          key={tag.id}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tag.name}
-                        </Badge>
-                      ))}
-                    </CardFooter>
-                  )}
-                </Card>
+                <DreamLogCard key={dream.id} dream={dream} />
               ))}
             </div>
           ) : (
