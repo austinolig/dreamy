@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getUserTagsWithDreamLogs } from "@/lib/actions";
+import { TagsList } from "@/components/tags-list";
+import { TagsStats } from "@/components/tags-stats";
 
 export default async function TagsManagerPage() {
   const session = await auth.api.getSession({
@@ -11,6 +14,8 @@ export default async function TagsManagerPage() {
     redirect("/login");
   }
 
+  const tags = await getUserTagsWithDreamLogs();
+
   return (
     <div className="flex-1 space-y-6 p-4 md:p-6 lg:p-8">
       <div className="space-y-2">
@@ -20,11 +25,9 @@ export default async function TagsManagerPage() {
         </p>
       </div>
 
-      <div className="rounded-lg border border-dashed p-8 text-center">
-        <p className="text-muted-foreground">
-          Tag management interface coming soon...
-        </p>
-      </div>
+      {tags.length > 0 && <TagsStats tags={tags} />}
+
+      <TagsList tags={tags} />
     </div>
   );
 }
