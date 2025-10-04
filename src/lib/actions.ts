@@ -270,3 +270,36 @@ export const getUserTags = async () => {
     return [];
   }
 };
+
+export const getUserTagsWithDreamLogs = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user.id) {
+    return [];
+  }
+
+  try {
+    const tags = await prisma.tag.findMany({
+      where: {
+        userId: session.user.id,
+      },
+      include: {
+        dreamLogs: {
+          orderBy: {
+            dreamDate: "desc",
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return tags;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
